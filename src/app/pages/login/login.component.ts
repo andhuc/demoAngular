@@ -1,46 +1,33 @@
-import { Component, OnInit, Injectable } from '@angular/core';
-import { FormControl, Validators, FormGroup } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { AuthService, UserForm } from 'src/app/services/auth/auth.service';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
+
 export class LoginComponent {
 
-  loginForm: FormGroup;
+  constructor(private authService: AuthService) { }
 
-  constructor(private auth: AuthService) {
-    this.loginForm = new FormGroup({
-      username: new FormControl('', [
-        Validators.required,
-        Validators.minLength(3)
-      ]),
-      password: new FormControl('', [
-        Validators.required,
-        Validators.minLength(8)
-      ])
-    });
-  }
+  user: UserForm = {
+    Username: '',
+    Password: '',
+  };
 
-  onSubmit() {
-    if (this.loginForm.invalid) {
-      return;
-    }
+  login() {
 
-    const loginData = {
-      username: this.loginForm.value.username,
-      password: this.loginForm.value.password
-    };
-
-    this.auth.login(loginData).subscribe({
-      next: (result) => {
-        // navigate on success 
+    this.authService.signIn(this.user).subscribe(
+      (authToken) => {
+        // Handle successful login (e.g., store token in local storage)
+        console.log('Login successful', authToken);
       },
-      error: (err) => {
-        // show error 
+      (error) => {
+        // Handle login error
+        console.error('Login error', error);
       }
-    });
-
+    );
   }
+
 }
