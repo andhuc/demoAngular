@@ -9,6 +9,7 @@ import { catchError, map } from 'rxjs/operators';
 })
 export class AuthService {
   apiUrl = environment.apiUrl;
+  private authTokenKey = 'authToken';
 
   constructor(private http: HttpClient) { }
 
@@ -21,14 +22,27 @@ export class AuthService {
     return this.http.post(signInUrl, user, { headers }).pipe(
       map((response: any) => {
         // Assuming your API returns the AuthToken object
+        this.setAuthToken(response as AuthToken);
         return response as AuthToken;
       }),
       catchError((error) => {
         // Handle error appropriately, e.g., log or throw a custom exception
-        console.error('Error during sign-in:', error);
         throw error;
       })
     );
+  }
+
+  setAuthToken(token: any): void {
+    localStorage.setItem(this.authTokenKey, token.accessToken);
+  }
+
+  getAuthToken(): string | null {
+    const storedToken = localStorage.getItem(this.authTokenKey);
+    return storedToken ? storedToken : null;
+  }
+
+  clearAuthToken(): void {
+    localStorage.removeItem(this.authTokenKey);
   }
 
 }

@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ToastrModule } from 'ngx-toastr';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -13,6 +15,8 @@ import { AdminComponent } from './pages/admin/admin.component';
 import { AdminRoutingModule } from './pages/admin/admin-routing.module';
 
 import { AuthService } from './services/auth/auth.service';
+import { ProductsService } from './services/products/products.service';
+import { CategoryService } from './services/categories/category.service';
 
 @NgModule({
   declarations: [
@@ -29,8 +33,14 @@ import { AuthService } from './services/auth/auth.service';
     AdminRoutingModule,
     FormsModule,
     HttpClientModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot(),
   ],
-  providers: [AuthService],
+  providers: [
+    AuthService,
+    ProductsService,
+    CategoryService,
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

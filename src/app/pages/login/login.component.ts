@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService, UserForm } from 'src/app/services/auth/auth.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-login',
@@ -9,7 +10,7 @@ import { AuthService, UserForm } from 'src/app/services/auth/auth.service';
 
 export class LoginComponent {
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService, private toastr: ToastrService) { }
 
   user: UserForm = {
     Username: '',
@@ -21,11 +22,11 @@ export class LoginComponent {
     this.authService.signIn(this.user).subscribe(
       (authToken) => {
         // Handle successful login (e.g., store token in local storage)
-        console.log('Login successful', authToken);
+        this.toastr.success('Logged in', 'Success');
       },
       (error) => {
         // Handle login error
-        console.error('Login error', error);
+        this.toastr.error(error.error, 'Error');
       }
     );
   }
