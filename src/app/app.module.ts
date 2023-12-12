@@ -18,6 +18,8 @@ import { AuthService } from './services/auth/auth.service';
 import { ProductsService } from './services/products/products.service';
 import { CategoryService } from './services/categories/category.service';
 
+import { AuthGuard } from './guards/auth.guards';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -40,6 +42,7 @@ import { CategoryService } from './services/categories/category.service';
     AuthService,
     ProductsService,
     CategoryService,
+    AuthGuard,
   ],
   bootstrap: [AppComponent]
 })

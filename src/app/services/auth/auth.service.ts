@@ -45,6 +45,40 @@ export class AuthService {
     localStorage.removeItem(this.authTokenKey);
   }
 
+  checkToken(accessToken: string): Observable<any> {
+    const checkTokenUrl = `${this.apiUrl}/api/Auth/validate-token`;
+    
+    // Send only the accessToken in the request body
+    const requestBody = { AccessToken: accessToken };
+  
+    return this.http.post(checkTokenUrl, requestBody).pipe(
+      map((response: any) => {
+        // Handle the response as needed
+        return response;
+      }),
+      catchError((error) => {
+        // Handle error appropriately, e.g., log or throw a custom exception
+        console.log(error);
+        throw error;
+      })
+    );
+  }
+
+  async checkLogined(): Promise<boolean> {
+    const token: string | null = this.getAuthToken();
+
+    if (token) {
+      try {
+        await this.checkToken(token).toPromise();
+        return true;
+      } catch (error) {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  }
+
 }
 
 export interface UserForm {
