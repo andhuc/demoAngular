@@ -69,13 +69,21 @@ export class AuthService {
 
     if (token) {
       try {
+
         await this.checkToken(token).toPromise();
         return true;
+
       } catch (error) {
+
+        this.clearAuthToken();
         return false;
+
       }
     } else {
+
+      this.clearAuthToken();
       return false;
+      
     }
   }
 

@@ -23,7 +23,7 @@ export class LoginComponent {
     this.authService.signIn(this.user).subscribe(
       (authToken) => {
         this.toastr.success('Logged in', 'Success');
-        this.router.navigate(['/admin/home']);
+        this.router.navigate(['/home']);
       },
       (error) => {
         this.toastr.error(error.error, 'Error');

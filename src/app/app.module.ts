@@ -9,14 +9,17 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './pages/login/login.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
-import { HomeComponent } from './components/home/home.component';
 import { ProductsComponent } from './components/products/products.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { AdminComponent } from './pages/admin/admin.component';
+import { HeaderComponent } from './components/header/header.component';
+import { HomeComponent } from './pages/home/home.component';
 import { AdminRoutingModule } from './pages/admin/admin-routing.module';
 
 import { AuthService } from './services/auth/auth.service';
 import { ProductsService } from './services/products/products.service';
 import { CategoryService } from './services/categories/category.service';
+import { OrderService } from './services/order/order.service';
 
 import { AuthGuard } from './guards/auth.guards';
 
@@ -25,9 +28,11 @@ import { AuthGuard } from './guards/auth.guards';
     AppComponent,
     LoginComponent,
     SidebarComponent,
-    HomeComponent,
     ProductsComponent,
     AdminComponent,
+    HeaderComponent,
+    DashboardComponent,
+    HomeComponent,
   ],
   imports: [
     BrowserModule,
@@ -42,6 +47,7 @@ import { AuthGuard } from './guards/auth.guards';
     AuthService,
     ProductsService,
     CategoryService,
+    OrderService,
     AuthGuard,
   ],
   bootstrap: [AppComponent]

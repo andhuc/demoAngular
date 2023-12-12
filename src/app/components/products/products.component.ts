@@ -16,12 +16,15 @@ export class ProductsComponent implements OnInit {
   addedProduct: Product = { productId: 0, productName: '', price: 0, category: '', updatedAt: null, createdAt: null, categoryId: 0 , status: true};
   categoryList: Category[] = [];
 
-  constructor(private productService: ProductsService, private categoryService: CategoryService, private authService: AuthService, private toastr: ToastrService) {
-    this.categoryService.getCategoryList().subscribe(data => { this.categoryList = data })
-  }
+  constructor(
+    private productService: ProductsService, 
+    private categoryService: CategoryService, 
+    private authService: AuthService, 
+    private toastr: ToastrService) {}
 
   ngOnInit(): void {
     this.loadProducts(this.currentPage);
+    this.categoryService.getCategoryList().subscribe(data => { this.categoryList = data });
   }
 
   loadProducts(page: number): void {

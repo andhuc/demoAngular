@@ -1,0 +1,67 @@
+<app-header></app-header>
+
+<header class=" py-5" style="background-image: url(https://picsum.photos/id/0/1600/900?blur); background-size: cover; background-position: center;">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="text-center text-white">
+            <h1 class="display-4 fw-bolder">Lorem ipsum</h1>
+            <p class="lead fw-normal text-white-50 mb-0">Lorem ipsum is placeholder text commonly used</p>
+        </div>
+    </div>
+</header>
+
+<section class="py-5">
+
+    <div class="text-end col-11">
+        <button class="btn btn-warning" (click)="getCart()" data-toggle="modal" data-target="#cartModal">🛒Cart</button>
+    </div>
+
+    <div class="container px-4 px-lg-5 mt-5">
+        <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-start">
+
+            <div class="col mb-5" *ngFor="let product of products">
+                <div class="card h-100">
+                    <!-- Product image-->
+                    <img class="card-img-top" src="https://picsum.photos/id/{{product.productId}}/450/300" alt="..." />
+                    <!-- Product details-->
+                    <div class="card-body p-4">
+                        <div class="text-center">
+                            <!-- Product name-->
+                            <h5 class="fw-bolder">{{product.productName}}</h5>
+                            <!-- Product price-->
+                            ${{product.price}}
+                        </div>
+                    </div>
+                    <!-- Product actions-->
+                    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                        <div class="text-center">
+                            <button class="btn btn-outline-dark mt-auto" (click)="addToCart(product.productId, 1)">Add to cart</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="text-center">
+        <button class="btn btn-light" (click)="loadMore()">Load more</button>
+    </div>
+</section>
+
+<div class="modal fade" id="cartModal" tabindex="-1" role="dialog" aria-labelledby="editProductModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-body" style="height: 70vh; overflow-y: auto;">
+                <div class="d-flex mt-2" *ngFor="let product of cartItemList">
+                    <img src="https://picsum.photos/id/{{product.productId}}/450/300" class="rounded col-2" style="object-fit: cover; aspect-ratio: 1;">
+                    <div class="text-center px-3 col-4">{{product.productId}}</div>
+                    <div class="text-center px-3 col-4">{{product.quantity}}</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Checkout</button>
+            </div>
+        </div>
+    </div>
+</div>
