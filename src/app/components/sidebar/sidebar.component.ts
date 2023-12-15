@@ -11,6 +11,7 @@ export class SidebarComponent implements OnInit {
   sidebarData = [
     {name: 'Dashboard', link: '/admin/dashboard'},
     {name: 'Products', link: '/admin/products'},
+    {name: 'Users', link: '/admin/users'},
   ];
 
   constructor(private authService: AuthService) { }

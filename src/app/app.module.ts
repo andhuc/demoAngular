@@ -23,6 +23,7 @@ import { SystemService } from './services/system/system.service';
 
 import { AuthGuard } from './guards/auth.guards';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
+import { UsersComponent } from './components/users/users.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { NotFoundComponent } from './pages/not-found/not-found.component';
     DashboardComponent,
     HomeComponent,
     NotFoundComponent,
+    UsersComponent,
   ],
   imports: [
     BrowserModule,
