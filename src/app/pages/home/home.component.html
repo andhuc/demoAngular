@@ -74,6 +74,9 @@
                     <div class="text-center px-3 col-4">{{product.productId}}</div>
                     <div class="text-center px-3 col-4">{{product.quantity}}</div>
                 </div>
+                <div class="text-center" *ngIf="cartItemList.length == 0">
+                    <h1 class="fw-bold">No item</h1>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
