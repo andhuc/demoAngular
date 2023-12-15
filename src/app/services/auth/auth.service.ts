@@ -47,10 +47,10 @@ export class AuthService {
 
   checkToken(accessToken: string): Observable<any> {
     const checkTokenUrl = `${this.apiUrl}/api/Auth/validate-token`;
-    
+
     // Send only the accessToken in the request body
     const requestBody = { AccessToken: accessToken };
-  
+
     return this.http.post(checkTokenUrl, requestBody).pipe(
       map((response: any) => {
         // Handle the response as needed
@@ -83,8 +83,36 @@ export class AuthService {
 
       this.clearAuthToken();
       return false;
-      
+
     }
+  }
+
+  decodeToken(token: string | null) {
+    if (!token) return null;
+
+    const parts = token.split('.');
+
+    if (parts.length !== 3) {
+      throw new Error('Invalid token format');
+    }
+
+    try {
+      const decoded = atob(parts[1]);
+      const json = JSON.parse(decoded);
+      return json;
+
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
+
+  }
+
+  hasRole(targetRole: number): boolean {
+    const decodedToken = this.decodeToken(this.getAuthToken());
+
+    // Check if the decoded token has a 'roles' property and if it contains the target role
+    return decodedToken && decodedToken.Role && decodedToken.Role == targetRole;
   }
 
 }

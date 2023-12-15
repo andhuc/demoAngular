@@ -17,9 +17,11 @@ export class HomeComponent implements OnInit {
   currentPage = 1;
   categoryList: Category[] = [];
   cartItemList: CartItem[] = [];
+  selectedCategory: number | undefined = undefined;
+  searchInput: string | undefined = undefined;
 
   constructor(
-    private productService: ProductsService, 
+    private productService: ProductsService,
     private categoryService: CategoryService,
     private authService: AuthService,
     private orderService: OrderService,
@@ -33,16 +35,29 @@ export class HomeComponent implements OnInit {
   }
 
   loadProducts(page: number): void {
-    this.productService.getProductsList(page).subscribe(data => {
-      if (data.length > 0) {
-        this.currentPage = page;
-        this.products = this.products.concat(data);
-      }
+    let productObservable = this.productService.filterProductsList(page, this.searchInput, this.selectedCategory)
+
+    productObservable.subscribe(data => {
+        if (data.length > 0) {
+            this.currentPage = page;
+            this.products = this.products.concat(data).filter(product => product.status);
+        }
     });
   }
 
   loadMore(): void {
     this.loadProducts(this.currentPage + 1);
+  }
+
+  loadProductsByCategory(): void {
+    this.currentPage = 1;
+    this.products = [];
+    this.loadProducts(this.currentPage);
+  }
+
+  searchProducts(): void {
+    this.products = [];
+    this.loadProducts(this.currentPage);
   }
 
   async addToCart(productId: number, quantity: number): Promise<void> {
@@ -77,7 +92,7 @@ export class HomeComponent implements OnInit {
   }
 
   async checkLogined(): Promise<void> {
-    if(! await this.authService.checkLogined()) {
+    if (! await this.authService.checkLogined()) {
       this.router.navigate(['/login']);
       return;
     }

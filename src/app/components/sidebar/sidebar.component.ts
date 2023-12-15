@@ -9,7 +9,7 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 export class SidebarComponent implements OnInit {
 
   sidebarData = [
-    {name: 'Home', link: '/admin/home'},
+    {name: 'Dashboard', link: '/admin/dashboard'},
     {name: 'Products', link: '/admin/products'},
   ];
 

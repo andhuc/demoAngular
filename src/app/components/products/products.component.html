@@ -21,8 +21,8 @@
                     <td>{{ product.category }}</td>
                     <td>{{ product.price }}</td>
                     <td>
-                        <button class="btn btn-primary" (click)="openEditModal(product)" data-toggle="modal" data-target="#editProductModal">Edit</button>
-                        <button class="btn btn-primary m-3 mt-0 mb-0" (click)="updateStatus(product)">
+                        <button class="btn btn-secondary" (click)="openEditModal(product)" data-toggle="modal" data-target="#editProductModal">Edit</button>
+                        <button class="btn {{ product.status ? 'btn-danger' : 'btn-primary' }} m-3 mt-0 mb-0" (click)="updateStatus(product)">
                             {{ product.status ? 'Disable' : 'Enable' }}
                         </button>
                     </td>
@@ -55,7 +55,7 @@
                     </div>
                     <div class="form-group">
                         <label for="editCategory">Category</label>
-                        <select class="form-control" name="category" [(ngModel)]="editedProduct.categoryId">
+                        <select class="form-select" name="category" [(ngModel)]="editedProduct.categoryId">
                             <option *ngFor="let category of categoryList" [ngValue]="category.categoryId">{{ category.categoryName }}</option>
                         </select>
                     </div>
@@ -69,7 +69,7 @@
                     </div>
                     <div class="form-group">
                         <label for="editCategory">Status</label>
-                        <select class="form-control" name="status" [(ngModel)]="editedProduct.status">
+                        <select class="form-select" name="status" [(ngModel)]="editedProduct.status">
                             <option value="true">Active</option>
                             <option value="false">Deactive</option>
                         </select>

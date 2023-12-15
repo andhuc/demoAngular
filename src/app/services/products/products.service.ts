@@ -33,6 +33,28 @@ export class ProductsService {
     );
   }
 
+  filterProductsList(page: number, productName?: string | null, categoryId?: number | null): Observable<Product[]> {
+    const filterUrl = `${this.apiUrl}/api/Products/filter?page=${page}` +
+                      `${productName ? `&productName=${productName}` : ''}` +
+                      `${categoryId ? `&categoryId=${categoryId}` : ''}`;
+
+    // Set headers if needed (e.g., content type)
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json'
+    });
+
+    return this.http.get(filterUrl, { headers }).pipe(
+      map((response: any) => {
+        // Assuming your API returns an array of Product objects
+        return response as Product[];
+      }),
+      catchError((error) => {
+        // Handle error appropriately, e.g., log or throw a custom exception
+        throw error;
+      })
+    );
+  }
+
   updateProduct(updatedProduct: Product): Observable<any> {
     const productUrl = `${this.apiUrl}/api/Products/${updatedProduct.productId}`;
 

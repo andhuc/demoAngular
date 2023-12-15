@@ -11,8 +11,23 @@
 
 <section class="py-5">
 
-    <div class="text-end col-11">
-        <button class="btn btn-warning" (click)="getCart()" data-toggle="modal" data-target="#cartModal">🛒Cart</button>
+    <div class="container d-flex justify-content-center">
+        <div class="col-11 d-flex" style="align-items: center; justify-content: space-between;">
+
+            <div class="col-md-2">
+                <select class="form-select" name="category" [(ngModel)]="selectedCategory" (change)="loadProductsByCategory()">
+                    <option value="undefined" disabled selected>Select Category</option>
+                    <!-- Add options dynamically based on your categoryList -->
+                    <option *ngFor="let category of categoryList" [value]="category?.categoryId">{{ category?.categoryName }}</option>
+                </select>
+            </div>
+              
+            <form class="col-md-3" onsubmit="event.preventDefault()" (submit)="searchProducts()">
+                <input class="form-control" type="text" name="searchInput" [(ngModel)]="searchInput" placeholder="Search">
+            </form>
+    
+            <button class="btn btn-warning" (click)="getCart()" data-toggle="modal" data-target="#cartModal">🛒Cart</button>
+        </div>
     </div>
 
     <div class="container px-4 px-lg-5 mt-5">
@@ -20,8 +35,9 @@
 
             <div class="col mb-5" *ngFor="let product of products">
                 <div class="card h-100">
+                    
                     <!-- Product image-->
-                    <img class="card-img-top" src="https://picsum.photos/id/{{product.productId}}/450/300" alt="..." />
+                    <img class="card-img-top" src="https://picsum.photos/id/{{product.productId}}/450/300"/>
                     <!-- Product details-->
                     <div class="card-body p-4">
                         <div class="text-center">
@@ -37,6 +53,7 @@
                             <button class="btn btn-outline-dark mt-auto" (click)="addToCart(product.productId, 1)">Add to cart</button>
                         </div>
                     </div>
+
                 </div>
             </div>
 

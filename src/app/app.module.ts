@@ -14,14 +14,15 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { AdminComponent } from './pages/admin/admin.component';
 import { HeaderComponent } from './components/header/header.component';
 import { HomeComponent } from './pages/home/home.component';
-import { AdminRoutingModule } from './pages/admin/admin-routing.module';
 
 import { AuthService } from './services/auth/auth.service';
 import { ProductsService } from './services/products/products.service';
 import { CategoryService } from './services/categories/category.service';
 import { OrderService } from './services/order/order.service';
+import { SystemService } from './services/system/system.service';
 
 import { AuthGuard } from './guards/auth.guards';
+import { NotFoundComponent } from './pages/not-found/not-found.component';
 
 @NgModule({
   declarations: [
@@ -33,11 +34,11 @@ import { AuthGuard } from './guards/auth.guards';
     HeaderComponent,
     DashboardComponent,
     HomeComponent,
+    NotFoundComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    AdminRoutingModule,
     FormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
@@ -48,6 +49,7 @@ import { AuthGuard } from './guards/auth.guards';
     ProductsService,
     CategoryService,
     OrderService,
+    SystemService,
     AuthGuard,
   ],
   bootstrap: [AppComponent]

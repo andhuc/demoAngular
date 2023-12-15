@@ -12,7 +12,7 @@ export class AuthGuard implements CanActivate {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Promise<boolean> {
-    const isAuthenticated = await this.authService.checkLogined();
+    const isAuthenticated = await this.authService.checkLogined() && this.authService.hasRole(1);
     if (isAuthenticated) {
       return true;
     } else {
