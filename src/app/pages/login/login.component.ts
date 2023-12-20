@@ -23,9 +23,9 @@ export class LoginComponent {
     this.authService.signIn(this.user).subscribe(
       (authToken) => {
         this.toastr.success('Logged in', 'Success');
-        if (this.authService.hasRole(1))
-          this.router.navigate(['/admin/dashboard']);
-        else this.router.navigate(['/home']);
+        // if (this.authService.hasRole(1))
+        //   this.router.navigate(['/admin/dashboard']);
+        // else this.router.navigate(['/home']);
       },
       (error) => {
         this.toastr.error(error.error, 'Error');

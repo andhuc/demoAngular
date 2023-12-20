@@ -7,11 +7,14 @@ import { AdminComponent } from './pages/admin/admin.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { ProductsComponent } from './components/products/products.component';
 import { UsersComponent } from './components/users/users.component';
+import { ContractComponent } from './pages/contract/contract.component';
+import { ContractsComponent } from './components/contracts/contracts.component';
 import { AuthGuard } from './guards/auth.guards';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'home', component: HomeComponent },
+  { path: 'contract', component: ContractComponent },
   {
     path: 'admin',
     component: AdminComponent,
@@ -19,6 +22,7 @@ const routes: Routes = [
       { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
       { path: 'products', component: ProductsComponent, canActivate: [AuthGuard] },
       { path: 'users', component: UsersComponent, canActivate: [AuthGuard] },
+      { path: 'contracts', component: ContractsComponent },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }, // Default route to Screen1
     ],
   },

@@ -12,6 +12,7 @@ export class SidebarComponent implements OnInit {
     {name: 'Dashboard', link: '/admin/dashboard'},
     {name: 'Products', link: '/admin/products'},
     {name: 'Users', link: '/admin/users'},
+    {name: 'Contracts', link: '/admin/contracts'},
   ];
 
   constructor(private authService: AuthService) { }

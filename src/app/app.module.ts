@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
+import { PdfViewerModule } from 'ng2-pdf-viewer';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -24,6 +25,8 @@ import { SystemService } from './services/system/system.service';
 import { AuthGuard } from './guards/auth.guards';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { UsersComponent } from './components/users/users.component';
+import { ContractComponent } from './pages/contract/contract.component';
+import { ContractsComponent } from './components/contracts/contracts.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +40,8 @@ import { UsersComponent } from './components/users/users.component';
     HomeComponent,
     NotFoundComponent,
     UsersComponent,
+    ContractComponent,
+    ContractsComponent,
   ],
   imports: [
     BrowserModule,
@@ -44,6 +49,7 @@ import { UsersComponent } from './components/users/users.component';
     FormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
+    PdfViewerModule,
     ToastrModule.forRoot(),
   ],
   providers: [
