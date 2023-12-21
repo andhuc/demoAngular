@@ -5,6 +5,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -50,6 +51,7 @@ import { ContractsComponent } from './components/contracts/contracts.component';
     HttpClientModule,
     BrowserAnimationsModule,
     PdfViewerModule,
+    DragDropModule,
     ToastrModule.forRoot(),
   ],
   providers: [
