@@ -22,6 +22,7 @@ import { ProductsService } from './services/products/products.service';
 import { CategoryService } from './services/categories/category.service';
 import { OrderService } from './services/order/order.service';
 import { SystemService } from './services/system/system.service';
+import { ContractService } from './services/contract/contract.service';
 
 import { AuthGuard } from './guards/auth.guards';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
@@ -60,6 +61,7 @@ import { ContractsComponent } from './components/contracts/contracts.component';
     CategoryService,
     OrderService,
     SystemService,
+    ContractService,
     AuthGuard,
   ],
   bootstrap: [AppComponent]

@@ -1,31 +1,41 @@
-<div class="row d-flex"
-    style="justify-content: center; flex-direction: column; align-items: center; flex-wrap: nowrap; width: 100%; height: 100vh;">
+<div style="display: flex; width: 100%; flex-direction: column; justify-content: center;">
 
-    <input class="form-control w-25" type="file" (change)="onFileSelected($event)" accept=".pdf" />
+    <div style="position: relative; width: 100%;">
 
-    <pdf-viewer id="pdf" [src]="pdfSrc" [render-text]="true" [page]="currentPage" [show-all]="false" [zoom]="0.75"
-        (after-load-complete)="afterLoadComplete($event)" style="width: 100%; height: 90vh; position: relative;">
-    </pdf-viewer>
+        <pdf-viewer id="pdf" 
+            [src]="pdfSrc" 
+            [render-text]="false" 
+            [page]="currentPage" 
+            [show-all]="false" 
+            [zoom]="0.75" 
+            (after-load-complete)="afterLoadComplete($event)" 
+            style="width: 100%; height: 100vh; overflow: hidden;">
+        </pdf-viewer>
 
-    <div class="signature-container" style="width: 100%; height: 100%; position: absolute; display: flex; justify-content: center;">
-        <div class="signature-page" style="position: relative;">
-            <div cdkDrag [cdkDragData]="selectedSignature" class="signature"
-                *ngFor="let signature of signatures; let i = index" [style.left.px]="signature.x"
-                [style.top.px]="signature.y" [style.width.px]="signature.width" [style.height.px]="signature.height">
-                <div>
-                    <span>Signature {{ i + 1 }}</span>
-                    <button (click)="removeSignature(i)">Remove</button>
+        <div class="signature-container" style="position: absolute; display: flex; justify-content: center; width: 100%; height: 100%; top: 0; left: 0;">
+            <div class="signature-page" style="position: relative; width: 100%; box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;">
+                <div cdkDrag *ngFor="let signature of signatures; let i = index" class="signature rounded" style="resize: both; "
+                    [id]="i"
+                    [style.width.px]="signature.width" [style.height.px]="signature.height"
+                    (cdkDragMoved)="onDragMoved(i)">
+                    <div *ngIf="signature.page == currentPage" class="rounded" style="width: 100%; height: 100%;">
+                        <span>Signature {{ i + 1 }}</span>
+                        <button class="btn btn-secondary p-1" (click)="removeSignature(i)"> X </button>
+                    </div>
                 </div>
             </div>
         </div>
+
     </div>
 
-    <div class="text-center" style="z-index: 3;">
-        <button class="btn btn-secondary col-1" style="margin: 0 2%;" (click)="goToPrevPage()"
+    <div class="text-center mb-3 mt-3">
+        <button class="btn btn-secondary p-2" style="margin: 0 2%;" (click)="goToPrevPage()"
             [disabled]="currentPage === 1">Prev Page</button>
-        <button class="btn btn-secondary col-1" style="margin: 0 2%;" (click)="goToNextPage()"
+        <button class="btn btn-secondary p-2" style="margin: 0 2%;" (click)="goToNextPage()"
             [disabled]="currentPage === totalPages">Next Page</button>
 
-        <button class="btn btn-primary col-1" style="margin: 0 2%;" (click)="addSignature()">Add Signature</button>
+        <button class="btn btn-success p-2" style="margin: 0 2%;" (click)="addSignature()">Add Signature</button>
+
+        <button class="btn btn-primary p-2" style="margin: 0 2%;" (click)="sign()">Sign</button>
     </div>
 </div>
