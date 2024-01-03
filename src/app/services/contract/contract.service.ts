@@ -57,6 +57,21 @@ export class ContractService {
       );
   }
 
+  upload(file: File): Observable<void> {
+    const url = `${this.apiUrl}/api/Contract/upload`;
+
+  const formData = new FormData();
+  formData.append('file', file, file.name);
+
+  return this.http.post(url, formData, { responseType: 'text' })
+    .pipe(
+      map(() => void 0), // Cast the response to void
+      catchError(error => {
+        throw error;
+      })
+    );
+  }
+
   getContracts(): Observable<Contract[]> {
     const contractsUrl = `${this.apiUrl}/api/Contract/get`;
 

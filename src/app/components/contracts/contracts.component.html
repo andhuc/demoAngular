@@ -1,6 +1,8 @@
 <div class="container">
     <h2>Contract list</h2>
 
+    <button class="btn btn-primary" data-toggle="modal" data-target="#addModal">Add contract</button>
+
     <div class="mt-5" style="height: 66vh; overflow-y: auto;">
         <table class="table table-bordered table-striped">
             <thead class="thead-dark">
@@ -23,12 +25,33 @@
                         </button>
                     </td>
                     <td>
-                        <button type="button" class="btn btn-warning" *ngIf="contract.isSigned" (click)="download(contract.id)">
+                        <button type="button" class="btn btn-warning" *ngIf="contract.isSigned"
+                            (click)="download(contract.id)">
                             Download
                         </button>
                     </td>
                 </tr>
             </tbody>
         </table>
+    </div>
+</div>
+
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Add contract</h2>
+            </div>
+            <div class="modal-body">
+                
+                <input type="file" class="form-control" accept=".pdf" id="fileInput">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" (click)="upload()">Add</button>
+            </div>
+        </div>
     </div>
 </div>

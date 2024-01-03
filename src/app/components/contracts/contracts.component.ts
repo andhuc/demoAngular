@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { ContractService, Contract } from 'src/app/services/contract/contract.service';
 import { Router } from '@angular/router';
@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./contracts.component.css']
 })
 export class ContractsComponent implements OnInit {
+  @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
 
   contracts: Contract[] = [];
 
@@ -42,6 +43,26 @@ export class ContractsComponent implements OnInit {
         this.toastr.error(error.statusText, 'Error');
       }
     );
+  }
+
+  upload() {
+    const fileInput = this.fileInput?.nativeElement;
+    const file: File | undefined = fileInput?.files?.[0];
+
+    if (file) {
+      this.contractService.upload(file).subscribe(
+        () => {
+          this.toastr.success('File uploaded successfully!', 'Success');
+          this.loadContracts();
+        },
+        error => {
+          console.error('Error uploading file', error);
+          this.toastr.error(error.statusText, 'Error');
+        }
+      );
+    } else {
+      this.toastr.error('No file selected', 'Error');
+    }
   }
 
   sign(contractId: number): void {

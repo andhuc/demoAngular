@@ -16,6 +16,9 @@ export class ContractComponent implements OnInit {
   signatures: Signature[] = [];
   selectedSignature: Signature | null = null;
 
+  initWidth = 150;
+  initHeight = 50;
+
   constructor(
     private contractService: ContractService, 
     private toastr: ToastrService,
@@ -94,8 +97,8 @@ export class ContractComponent implements OnInit {
       page: this.currentPage,
       x: 0,
       y: this.getPageHeight(),
-      width: 150,
-      height: 50,
+      width: this.initWidth,
+      height: this.initHeight,
       name: 'tester',
       reason: 'test'
     };
@@ -153,6 +156,26 @@ export class ContractComponent implements OnInit {
     }
   }
 
+  resizeSignature(index: number): void {
+    let elementId = `resizeHandle${index}`;
+    let coor: any = this.getTranslateValues(elementId);
+
+    this.signatures[index].width = this.initWidth + coor.x;
+    this.signatures[index].height = this.initHeight + coor.y;
+
+    this.clearTransform(elementId);
+  }
+
+  clearTransform(elementId: string): void {
+    const element = document.getElementById(elementId);
+  
+    if (element) {
+      element.style.transform = '';
+    } else {
+      console.error(`Element with ID "${elementId}" not found.`);
+    }
+  }
+
   sign() {
     // Make a call to your backend service to add signatures
     this.contractService.addSignatures(this.contractId, this.signatures).subscribe(
@@ -164,6 +187,8 @@ export class ContractComponent implements OnInit {
       }
     );
   }
+
+
 }
 
 export interface Signature {

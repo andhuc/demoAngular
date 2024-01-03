@@ -5,7 +5,7 @@
         <pdf-viewer id="pdf" 
             [src]="pdfSrc" 
             [render-text]="false" 
-            [page]="currentPage" 
+            [page]="currentPage"
             [show-all]="false" 
             [zoom]="0.75" 
             (after-load-complete)="afterLoadComplete($event)" 
@@ -14,14 +14,19 @@
 
         <div class="signature-container" style="position: absolute; display: flex; justify-content: center; width: 100%; height: 100%; top: 0; left: 0;">
             <div class="signature-page" style="position: relative; width: 100%; box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;">
-                <div cdkDrag *ngFor="let signature of signatures; let i = index" class="signature rounded" style="resize: both; "
+                <div cdkDrag *ngFor="let signature of signatures; let i = index" class="signature rounded"
                     [id]="i"
                     [style.width.px]="signature.width" [style.height.px]="signature.height"
                     (cdkDragMoved)="onDragMoved(i)">
-                    <div *ngIf="signature.page == currentPage" class="rounded" style="width: 100%; height: 100%;">
-                        <span>Signature {{ i + 1 }}</span>
-                        <button class="btn btn-secondary p-1" (click)="removeSignature(i)"> X </button>
+
+                    <div *ngIf="signature.page == currentPage" class="rounded p-3" style="width: 100%; height: 100%;">
+                        <input class="form-control w-75" type="text" [(ngModel)]="signature.name" style="background-color: transparent; border-bottom: 2px black solid;">
+
+                        <button class="btn btn-secondary col-1" (click)="removeSignature(i)" style="position: absolute; top: 0; right: 0;"> X </button>
+
+                        <div [id]="'resizeHandle' + i" class="resizeHandle rounded-0" cdkDrag (cdkDragMoved)="resizeSignature(i)"></div>
                     </div>
+
                 </div>
             </div>
         </div>

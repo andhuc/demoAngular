@@ -28,3 +28,14 @@
     padding: 4px;
     background-color: rgba(0, 255, 0, 0.2);
 }
+
+.resizeHandle {
+    position: absolute; 
+    bottom: 0;
+    right: 0;
+    aspect-ratio: 1;
+    width: 5px;
+    height: 5px;
+    background-color: red !important;
+    cursor: nw-resize;
+}
