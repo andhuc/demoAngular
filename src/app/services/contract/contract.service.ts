@@ -85,6 +85,30 @@ export class ContractService {
     );
   }
 
+  getSignatures(contractId: number): Observable<Signature[]> {
+    const url = `${this.apiUrl}/api/Contract/getSignature/${contractId}`;
+
+    return this.http.get(url).pipe(
+      map((response: any) => {
+        return response as Signature[];
+      }),
+      catchError((error) => {
+        throw error;
+      })
+    );
+  }
+
+  saveSignatures(contractId: number, signatures: Signature[]): Observable<void> {
+    const url = `${this.apiUrl}/api/Contract/save/${contractId}`;
+  
+    return this.http.post(url, signatures, { responseType: 'text' }).pipe(
+      map(() => void 0), // Cast the response to void
+      catchError((error) => {
+        throw error;
+      })
+    );
+  }
+
 }
 
 export interface Contract {

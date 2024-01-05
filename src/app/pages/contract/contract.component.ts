@@ -14,22 +14,53 @@ export class ContractComponent implements OnInit {
   currentPage = 1;
   totalPages = 0;
   signatures: Signature[] = [];
-  selectedSignature: Signature | null = null;
+  selectedSignature: Signature = {
+    page: 0,
+    x: 0,
+    y: 0,
+    width: 0,
+    height: 0,
+    name: '',
+    reason: ''
+  };
 
-  initWidth = 150;
-  initHeight = 50;
+  initWidth = 250;
+  initHeight = 75;
 
   constructor(
-    private contractService: ContractService, 
+    private contractService: ContractService,
     private toastr: ToastrService,
     private route: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
-    this.route.params.subscribe(params => {
+    this.route.params.subscribe(async params => {
       this.contractId = +params['contractId'];
       this.pdfSrc = `http://localhost:5000/api/Contract/${this.contractId}`;
+
+      // Load signatures and wait for it to complete
+      await this.loadSignatures();
     });
+  }
+
+  setInitialTransformations(): void {
+    this.signatures.forEach((signature, index) => {
+      const elementId = index+'';
+      const x = signature.x;
+      const y = this.getPageHeight() - signature.y - signature.height;
+  
+      this.setTransform(elementId, x, y);
+    });
+  }
+  
+  setTransform(elementId: string, x: number, y: number): void {
+    const element = document.getElementById(elementId);
+  
+    if (element) {
+      element.style.transform = `translate(${x}px, ${y}px)`;
+    } else {
+      console.error(`Element with ID "${elementId}" not found.`);
+    }
   }
 
   afterLoadComplete(pdf: any): void {
@@ -37,6 +68,7 @@ export class ContractComponent implements OnInit {
 
     setTimeout(() => {
       this.fixSize();
+      this.setInitialTransformations();
     }, 500);
   }
 
@@ -107,7 +139,7 @@ export class ContractComponent implements OnInit {
   }
 
   onDragMoved(index: number): void {
-    let coor: any = this.getTranslateValues(index+'');
+    let coor: any = this.getTranslateValues(index + '');
 
     this.signatures[index].x = coor.x;
     this.signatures[index].y = this.getPageHeight() - coor.y - this.signatures[index].height;
@@ -168,7 +200,7 @@ export class ContractComponent implements OnInit {
 
   clearTransform(elementId: string): void {
     const element = document.getElementById(elementId);
-  
+
     if (element) {
       element.style.transform = '';
     } else {
@@ -181,6 +213,32 @@ export class ContractComponent implements OnInit {
     this.contractService.addSignatures(this.contractId, this.signatures).subscribe(
       () => {
         this.toastr.success('Document signed successfully!', 'Success');
+      },
+      error => {
+        this.toastr.error(error.statusText, 'Error');
+      }
+    );
+  }
+
+  selectSignature(index: number): void {
+    this.selectedSignature = this.signatures[index];
+  }
+
+  async loadSignatures(): Promise<void> {
+    // Make a call to your backend service to get signatures
+    try {
+      const signatures = await this.contractService.getSignatures(this.contractId).toPromise();
+      this.signatures = signatures??[];
+    } catch (error: any) {
+      console.error(error);
+    }
+  }
+
+  saveSignatures(): void {
+    // Make a call to your backend service to save signatures
+    this.contractService.saveSignatures(this.contractId, this.signatures).subscribe(
+      () => {
+        this.toastr.success('Signatures saved successfully!', 'Success');
       },
       error => {
         this.toastr.error(error.statusText, 'Error');

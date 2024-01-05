@@ -1,4 +1,4 @@
-<div style="display: flex; width: 100%; flex-direction: column; justify-content: center;">
+<div style="display: flex; width: 100%; flex-direction: column; justify-content: center; position: relative;">
 
     <div style="position: relative; width: 100%;">
 
@@ -19,12 +19,17 @@
                     [style.width.px]="signature.width" [style.height.px]="signature.height"
                     (cdkDragMoved)="onDragMoved(i)">
 
-                    <div *ngIf="signature.page == currentPage" class="rounded p-3" style="width: 100%; height: 100%;">
-                        <input class="form-control w-75" type="text" [(ngModel)]="signature.name" style="background-color: transparent; border-bottom: 2px black solid;">
-
-                        <button class="btn btn-secondary col-1" (click)="removeSignature(i)" style="position: absolute; top: 0; right: 0;"> X </button>
+                    <div *ngIf="signature.page == currentPage" class="rounded p-3 signature-content" style="width: 100%; height: 100%;">
+                        <!-- <input class="form-control w-75" type="text" [(ngModel)]="signature.name" style="background-color: transparent; border-bottom: 2px black solid;"> -->
+                        <span> <span class="fw-bold">Name:</span> {{ signature.name }}</span>
+                        <span> <span class="fw-bold">Reason:</span> {{ signature.reason }}</span>
 
                         <div [id]="'resizeHandle' + i" class="resizeHandle rounded-0" cdkDrag (cdkDragMoved)="resizeSignature(i)"></div>
+
+                        <div class="d-flex text-end" style="position: absolute; top: 0; right: 0;">
+                            <button class="btn btn-secondary p-1 ms-1" data-toggle="modal" data-target="#editModal" (click)="selectSignature(i)">Edit</button>
+                            <button class="btn btn-secondary p-1" (click)="removeSignature(i)"> X </button>
+                        </div>
                     </div>
 
                 </div>
@@ -41,6 +46,30 @@
 
         <button class="btn btn-success p-2" style="margin: 0 2%;" (click)="addSignature()">Add Signature</button>
 
+        <button class="btn btn-warning p-2" style="margin: 0 2%;" (click)="saveSignatures()">Save draft</button>
+
         <button class="btn btn-primary p-2" style="margin: 0 2%;" (click)="sign()">Sign</button>
+    </div>
+</div>
+
+<div id="editModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="exampleModalLabel">Edit signature</h3>
+            </div>
+            <div class="modal-body d-flex" style="flex-direction: column;">
+
+                <label>Name: </label>
+                <input type="text" class="form-control" [(ngModel)]="selectedSignature.name">
+
+                <label>Reason: </label>
+                <input type="text" class="form-control" [(ngModel)]="selectedSignature.reason">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
     </div>
 </div>
