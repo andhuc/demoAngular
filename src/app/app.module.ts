@@ -6,6 +6,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -23,6 +24,7 @@ import { CategoryService } from './services/categories/category.service';
 import { OrderService } from './services/order/order.service';
 import { SystemService } from './services/system/system.service';
 import { ContractService } from './services/contract/contract.service';
+import { StorageService } from './services/storage/storage.service';
 
 import { AuthGuard } from './guards/auth.guards';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
@@ -53,6 +55,7 @@ import { ContractsComponent } from './components/contracts/contracts.component';
     BrowserAnimationsModule,
     PdfViewerModule,
     DragDropModule,
+    NgxSpinnerModule,
     ToastrModule.forRoot(),
   ],
   providers: [
@@ -62,6 +65,7 @@ import { ContractsComponent } from './components/contracts/contracts.component';
     OrderService,
     SystemService,
     ContractService,
+    StorageService,
     AuthGuard,
   ],
   bootstrap: [AppComponent]

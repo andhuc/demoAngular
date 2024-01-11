@@ -2,6 +2,8 @@ import { ContractService } from './../../services/contract/contract.service';
 import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { StorageService } from 'src/app/services/storage/storage.service';
 
 @Component({
   selector: 'app-contract',
@@ -31,13 +33,18 @@ export class ContractComponent implements OnInit {
   constructor(
     private contractService: ContractService,
     private toastr: ToastrService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private spinner: NgxSpinnerService,
+    private storageService: StorageService
   ) { }
 
   ngOnInit(): void {
     this.route.params.subscribe(async params => {
+      this.spinner.show();
+
       this.contractId = +params['contractId'];
       this.pdfSrc = `http://localhost:5000/api/Contract/${this.contractId}`;
+      this.currentPage = this.storageService.getNumberValue(this.pdfSrc)?? 1;
 
       // Load signatures and wait for it to complete
       await this.loadSignatures();
@@ -70,6 +77,7 @@ export class ContractComponent implements OnInit {
     setTimeout(() => {
       this.fixSize();
       this.setInitialTransformations();
+      this.spinner.hide();
     }, 500);
   }
 
@@ -112,6 +120,7 @@ export class ContractComponent implements OnInit {
       this.currentPage--;
     }
     this.fixSize();
+    this.storageService.saveKeyValuePair(this.pdfSrc, this.currentPage);
   }
 
   goToNextPage() {
@@ -119,6 +128,7 @@ export class ContractComponent implements OnInit {
       this.currentPage++;
     }
     this.fixSize();
+    this.storageService.saveKeyValuePair(this.pdfSrc, this.currentPage);
   }
 
   removeSignature(index: number) {

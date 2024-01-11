@@ -1,5 +1,6 @@
 @import '~bootstrap/dist/css/bootstrap.min.css';
 @import '~ngx-toastr/toastr.css';
+@import '~ngx-spinner/animations/ball-clip-rotate.css';
 
 * {box-sizing: border-box;}
 html, body { height: 100%; }
