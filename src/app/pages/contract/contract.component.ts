@@ -21,7 +21,8 @@ export class ContractComponent implements OnInit {
     width: 0,
     height: 0,
     name: '',
-    reason: ''
+    reason: '',
+    imageData: null
   };
 
   initWidth = 250;
@@ -45,17 +46,17 @@ export class ContractComponent implements OnInit {
 
   setInitialTransformations(): void {
     this.signatures.forEach((signature, index) => {
-      const elementId = index+'';
+      const elementId = index + '';
       const x = signature.x;
       const y = this.getPageHeight() - signature.y - signature.height;
-  
+
       this.setTransform(elementId, x, y);
     });
   }
-  
+
   setTransform(elementId: string, x: number, y: number): void {
     const element = document.getElementById(elementId);
-  
+
     if (element) {
       element.style.transform = `translate(${x}px, ${y}px)`;
     } else {
@@ -132,7 +133,8 @@ export class ContractComponent implements OnInit {
       width: this.initWidth,
       height: this.initHeight,
       name: 'tester',
-      reason: 'test'
+      reason: 'test',
+      imageData: null
     };
 
     this.signatures.push(newSignature);
@@ -215,7 +217,8 @@ export class ContractComponent implements OnInit {
         this.toastr.success('Document signed successfully!', 'Success');
       },
       error => {
-        this.toastr.error(error.statusText, 'Error');
+        this.toastr.error(error.error?? error.statusText, 'Error');
+        console.log(error)
       }
     );
   }
@@ -228,7 +231,7 @@ export class ContractComponent implements OnInit {
     // Make a call to your backend service to get signatures
     try {
       const signatures = await this.contractService.getSignatures(this.contractId).toPromise();
-      this.signatures = signatures??[];
+      this.signatures = signatures ?? [];
     } catch (error: any) {
       console.error(error);
     }
@@ -246,6 +249,59 @@ export class ContractComponent implements OnInit {
     );
   }
 
+  async changeImage(event: any) {
+    const file = event.target.files[0];
+
+    if (file) {
+      await this.convertFileToBase64(file).then(base64String => {
+        this.selectedSignature.imageData = base64String;
+      });
+    }
+
+    event.target.value = '';
+  }
+
+  async convertFileToBase64(file: File): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+
+      // Validate file type
+      if (!file.type.startsWith('image/')) {
+        this.toastr.error('Invalid file type. Please select an image.', 'Error');
+        reject(new Error('Invalid file type. Please select an image.'));
+        return;
+      }
+
+      // Validate file size (for example, limit to 3 MB)
+      const maxSizeInBytes = 3 * 1024 * 1024; // 3 MB
+      if (file.size > maxSizeInBytes) {
+        this.toastr.error('File size exceeds the allowed limit (5 MB).', 'Error');
+        reject(new Error('File size exceeds the allowed limit (5 MB).'));
+        return;
+      }
+
+      reader.onload = () => {
+        if (typeof reader.result === 'string') {
+          const base64Content = reader.result.split(',')[1];
+          resolve(base64Content);
+        } else {
+          this.toastr.error('Failed to read file.', 'Error');
+          reject(new Error('Failed to read file.'));
+        }
+      };
+
+      reader.onerror = (error) => {
+        this.toastr.error(error.toString(), 'Error');
+        reject(error);
+      };
+
+      reader.readAsDataURL(file);
+    });
+  }
+
+  clearImage() :void{
+    this.selectedSignature.imageData = null;
+  }
 
 }
 
@@ -256,5 +312,6 @@ export interface Signature {
   width: number,
   height: number,
   name: string,
-  reason: string
+  reason: string,
+  imageData: string | null
 }

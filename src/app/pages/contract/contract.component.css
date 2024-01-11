@@ -19,8 +19,8 @@
     display: flex;
     justify-content: space-around;
     flex-direction: column;
-    padding: 4px;
-    background-color: rgba(0, 255, 0, 0.2);
+    background-color: rgba(0, 0, 0, 0.092);
+    border: 2px black dotted;
 }
 
 .signature-content span {
@@ -29,10 +29,9 @@
 
 .resizeHandle {
     position: absolute; 
-    bottom: 0;
-    right: 0;
+    bottom: -0.5rem;
+    right: -0.5rem;
     aspect-ratio: 1;
-    width: 10px;
-    background-color: red !important;
-    cursor: nw-resize;
+    width: 1.5rem;
+    cursor: pointer;
 }
