@@ -46,12 +46,12 @@ export class ContractComponent implements OnInit {
       this.pdfSrc = `http://localhost:5000/api/Contract/${this.contractId}`;
       this.currentPage = this.storageService.getNumberValue(this.pdfSrc)?? 1;
 
-      // Load signatures and wait for it to complete
       await this.loadSignatures();
     });
   }
 
   setInitialTransformations(): void {
+
     this.signatures.forEach((signature, index) => {
       const elementId = index + '';
       const x = signature.x;
@@ -74,7 +74,7 @@ export class ContractComponent implements OnInit {
   afterLoadComplete(pdf: any): void {
     this.totalPages = pdf.numPages;
 
-    setTimeout(() => {
+    setTimeout(async () => {
       this.fixSize();
       this.setInitialTransformations();
       this.spinner.hide();
@@ -221,6 +221,13 @@ export class ContractComponent implements OnInit {
   }
 
   sign() {
+    if (this.signatures.length == 0) {
+      this.toastr.warning('Signature required!', 'Warning');
+      return;
+    }
+
+    this.spinner.show();
+
     // Make a call to your backend service to add signatures
     this.contractService.addSignatures(this.contractId, this.signatures).subscribe(
       () => {
@@ -231,6 +238,8 @@ export class ContractComponent implements OnInit {
         console.log(error)
       }
     );
+
+    this.spinner.hide();
   }
 
   selectSignature(index: number): void {
@@ -248,6 +257,13 @@ export class ContractComponent implements OnInit {
   }
 
   saveSignatures(): void {
+    if (this.signatures.length == 0) {
+      this.toastr.warning('Signature required!', 'Warning');
+      return;
+    }
+
+    this.spinner.show();
+
     // Make a call to your backend service to save signatures
     this.contractService.saveSignatures(this.contractId, this.signatures).subscribe(
       () => {
@@ -257,6 +273,8 @@ export class ContractComponent implements OnInit {
         this.toastr.error(error.statusText, 'Error');
       }
     );
+
+    this.spinner.hide();
   }
 
   async changeImage(event: any) {
@@ -265,6 +283,7 @@ export class ContractComponent implements OnInit {
     if (file) {
       await this.convertFileToBase64(file).then(base64String => {
         this.selectedSignature.imageData = base64String;
+        console.log(base64String)
       });
     }
 
@@ -282,8 +301,8 @@ export class ContractComponent implements OnInit {
         return;
       }
 
-      // Validate file size (for example, limit to 3 MB)
-      const maxSizeInBytes = 3 * 1024 * 1024; // 3 MB
+      // Validate file size (for example, limit to 5 MB)
+      const maxSizeInBytes = 5 * 1024 * 1024; // 5 MB
       if (file.size > maxSizeInBytes) {
         this.toastr.error('File size exceeds the allowed limit (5 MB).', 'Error');
         reject(new Error('File size exceeds the allowed limit (5 MB).'));

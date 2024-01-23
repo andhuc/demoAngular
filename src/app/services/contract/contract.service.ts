@@ -15,7 +15,7 @@ export class ContractService {
 
   addSignatures(contractId: number, signatures: Signature[]): Observable<void> {
     const url = `${this.apiUrl}/api/Contract/sign/${contractId}`;
-    
+
     // Set the responseType to 'arraybuffer' to handle binary data
     return this.http.post(url, signatures, { responseType: 'arraybuffer' })
       .pipe(
@@ -37,7 +37,7 @@ export class ContractService {
 
   download(contractId: number, isSigned: boolean): Observable<void> {
     const url = `${this.apiUrl}/api/Contract/${contractId}?isSigned=${isSigned}`;
-    
+
     // Set the responseType to 'arraybuffer' to handle binary data
     return this.http.get(url, { responseType: 'arraybuffer' })
       .pipe(
@@ -60,16 +60,16 @@ export class ContractService {
   upload(file: File): Observable<void> {
     const url = `${this.apiUrl}/api/Contract/upload`;
 
-  const formData = new FormData();
-  formData.append('file', file, file.name);
+    const formData = new FormData();
+    formData.append('file', file, file.name);
 
-  return this.http.post(url, formData, { responseType: 'text' })
-    .pipe(
-      map(() => void 0), // Cast the response to void
-      catchError(error => {
-        throw error;
-      })
-    );
+    return this.http.post(url, formData, { responseType: 'text' })
+      .pipe(
+        map(() => void 0), // Cast the response to void
+        catchError(error => {
+          throw error;
+        })
+      );
   }
 
   getContracts(): Observable<Contract[]> {
@@ -100,13 +100,25 @@ export class ContractService {
 
   saveSignatures(contractId: number, signatures: Signature[]): Observable<void> {
     const url = `${this.apiUrl}/api/Contract/save/${contractId}`;
-  
+
     return this.http.post(url, signatures, { responseType: 'text' }).pipe(
       map(() => void 0), // Cast the response to void
       catchError((error) => {
         throw error;
       })
     );
+  }
+
+  deleteContract(contractId: number): Observable<void> {
+
+    const url = `${this.apiUrl}/api/Contract/${contractId}`;
+  
+    return this.http.delete<void>(url)
+      .pipe(
+        catchError(error => {
+          throw error;
+        })
+      );
   }
 
 }

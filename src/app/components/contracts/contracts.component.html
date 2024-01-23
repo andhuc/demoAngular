@@ -20,9 +20,10 @@
                     <td>{{ contract.title }}</td>
                     <td>{{ contract.createdAt | date: 'yyyy-MM-dd HH:mm:ss'}}</td>
                     <td>
-                        <button type="button" class="btn btn-primary" (click)="sign(contract.id)">
+                        <button type="button" class="btn btn-primary" style="margin-right: 5%;" (click)="sign(contract.id)">
                             Sign
                         </button>
+                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal" (click)="selectContract(contract)">Delete</button>
                     </td>
                     <td>
                         <button type="button" class="btn btn-warning" *ngIf="contract.isSigned"
@@ -50,7 +51,22 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" (click)="upload()">Add</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="upload()">Add</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Are you sure?</h2>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal" (click)="deleteContract()">Yes</button>
             </div>
         </div>
     </div>
