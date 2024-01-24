@@ -32,13 +32,13 @@ export class ContractsComponent implements OnInit {
     this.contractService.getContracts().subscribe(
       (contracts: Contract[]) => {
         this.contracts = contracts;
+        this.spinner.hide();
       },
       (error) => {
         this.toastr.error(error.statusText, 'Error');
+        this.spinner.hide();
       }
     );
-
-    this.spinner.hide();
   }
 
   download(contractId: number): void {

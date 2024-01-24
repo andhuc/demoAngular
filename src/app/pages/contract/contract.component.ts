@@ -44,7 +44,7 @@ export class ContractComponent implements OnInit {
 
       this.contractId = +params['contractId'];
       this.pdfSrc = `http://localhost:5000/api/Contract/${this.contractId}`;
-      this.currentPage = this.storageService.getNumberValue(this.pdfSrc)?? 1;
+      this.currentPage = this.storageService.getNumberValue(this.pdfSrc) ?? 1;
 
       await this.loadSignatures();
     });
@@ -231,15 +231,15 @@ export class ContractComponent implements OnInit {
     // Make a call to your backend service to add signatures
     this.contractService.addSignatures(this.contractId, this.signatures).subscribe(
       () => {
+        this.spinner.hide();
         this.toastr.success('Document signed successfully!', 'Success');
       },
       error => {
-        this.toastr.error(error.error?? error.statusText, 'Error');
+        this.spinner.hide();
+        this.toastr.error(error.error ?? error.statusText, 'Error');
         console.log(error)
       }
     );
-
-    this.spinner.hide();
   }
 
   selectSignature(index: number): void {
@@ -267,14 +267,14 @@ export class ContractComponent implements OnInit {
     // Make a call to your backend service to save signatures
     this.contractService.saveSignatures(this.contractId, this.signatures).subscribe(
       () => {
+        this.spinner.hide();
         this.toastr.success('Signatures saved successfully!', 'Success');
       },
       error => {
+        this.spinner.hide();
         this.toastr.error(error.statusText, 'Error');
       }
     );
-
-    this.spinner.hide();
   }
 
   async changeImage(event: any) {
@@ -283,7 +283,6 @@ export class ContractComponent implements OnInit {
     if (file) {
       await this.convertFileToBase64(file).then(base64String => {
         this.selectedSignature.imageData = base64String;
-        console.log(base64String)
       });
     }
 
@@ -328,7 +327,7 @@ export class ContractComponent implements OnInit {
     });
   }
 
-  clearImage() :void{
+  clearImage(): void {
     this.selectedSignature.imageData = null;
   }
 
