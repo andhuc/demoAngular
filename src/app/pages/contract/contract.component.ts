@@ -89,6 +89,10 @@ export class ContractComponent implements OnInit {
 
     const page = document.querySelector('.page') as HTMLElement;
     page && (page.style.marginBottom = '0px');
+
+    // hide overflow
+    const element = document.querySelector('.ng2-pdf-viewer-container') as HTMLElement;
+    element.style.overflow = 'hidden';
   }
 
   setHeight(selector1: string, selector2: string): void {
